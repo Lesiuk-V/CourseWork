@@ -3,9 +3,11 @@
 #include <cstdlib>
 #include <string.h>
 #include <fstream>
+#include <stdlib.h> 
+#include <cstring>
 using namespace std;
 
-
+#define _CRT_SECURE_NO_WARNINGS
 
 class Human
 {
@@ -30,14 +32,14 @@ public:
     friend istream& operator >> (istream& s, Human& d);
     friend ostream& operator << (ostream& s, Human& d);
 
-    //Human(string name="null", string surname = "null", string patronymic = "null",  string nationality = "null", string dateOfbirth = "null")
-    //{
-    //    setName(name);
-    //    setLastName(patronymic); 
-    //    setSurname(surname);
-    //    setNationality(nationality);
-    //    setDateOfBitth(dateOfbirth);
-    //}
+    Human()
+    {
+        strcpy_s(name, _countof(name), "unknow");
+        strcpy_s(surname, _countof(surname), "unknow");
+        strcpy_s(patronymic, _countof(patronymic), "unknow");
+        strcpy_s(nationality, _countof(nationality), "unknow");
+        strcpy_s(dateOfBirth, _countof(dateOfBirth), "unknow");
+    }
 
     void create() {
         cout << "Name: "; cin.ignore(); cin.getline(name, 50);
@@ -54,8 +56,9 @@ public:
             << "\nNationaly" << getNationality() << "\nDate of birth:" << getDateOfBirth() << endl;
     }
 
+    
 
-    int count()
+    virtual int count()
     {
         int n;
         ifstream ifile;
@@ -89,23 +92,51 @@ class Citizen : public Human
 private:
 
     int numberDocument;
-    string dateOfExpiry;
+    char dateOfExpiry[11];
 public:
     Human h;
     static string typeOfDocument;
     void setNumberDocument(int numberDocument) { this->numberDocument = numberDocument; }
-    void setDateOfExipiry(string dateOfExpiry) { this->dateOfExpiry = dateOfExpiry; }
+   // void setDateOfExipiry(char* dateOfExpiry) { this->dateOfExpiry = dateOfExpiry; }
     int getNumberDocument() { return numberDocument; }
     string getDateOfExpiry() { return dateOfExpiry; }
     string getTypeOfDocument() { return typeOfDocument; }
 
-    Citizen(string name = "null", string surname = "null", string patronymic = "null",
-        string nationality = "null", string dateOfbirth = "null", int numberDocument = 0,
-        string dateOfExpiry = "null") //:Human(name,surname,patronymic,nationality,dateOfbirth)
+
+    Citizen()
     {
-        setNumberDocument(numberDocument);
-        setDateOfExipiry(dateOfExpiry);
+        strcpy_s(name, _countof(name), "unknow");
+        strcpy_s(surname, _countof(surname), "unknow");
+        strcpy_s(patronymic, _countof(patronymic), "unknow");
+        strcpy_s(nationality, _countof(nationality), "unknow");
+        strcpy_s(dateOfBirth, _countof(dateOfBirth), "unknow");
+        strcpy_s(dateOfExpiry, _countof(dateOfExpiry), "unknow");
     }
+    virtual int count()
+    {
+        int n;
+        ifstream ifile;
+        ifile.open("Citizen.dat", ios::in | ios::binary);
+        ifile.seekg(0, ios::end);
+        int endposition = ifile.tellg();
+        n = endposition / sizeof(Citizen);
+        return n;
+    }
+
+    void generate_DN()
+    {
+
+    }
+
+
+    //Citizen(string name = "null", string surname = "null", string patronymic = "null",
+    //    string nationality = "null", string dateOfbirth = "null", int numberDocument = 0,
+    //    string dateOfExpiry = "null") //:Human(name,surname,patronymic,nationality,dateOfbirth)
+    //{
+    //    setNumberDocument(numberDocument);
+    //    
+    //    //setDateOfExipiry(dateOfExpiry);
+    //}
 
 
 
@@ -148,6 +179,18 @@ public:
             << "\nDoucument Number: " << getNumberDocument() << "\nDate of expiry: " << getDateOfExpiry() << endl;
     }
 
+
+    virtual int count()
+    {
+        int n;
+        ifstream ifile;
+        ifile.open("TCitizen.dat", ios::in | ios::binary);
+        ifile.seekg(0, ios::end);
+        int endposition = ifile.tellg();
+        n = endposition / sizeof(TemporaryCitizen);
+        return n;
+    }
+
 };
 
 
@@ -161,7 +204,11 @@ void print_menu() {
     cout << "2. додати тимчасового громадянина" << endl;
     cout << "3. переглянути громадян" << endl;
     cout << "4. переглянути тимчасових громадян" << endl;
-    cout << "5. Exit" << endl;
+    cout << "5. пошук громадян" << endl;
+    cout << "6. пошук тимчасових громадян" << endl;
+    cout << "7. видалення громадянина" << endl;
+    cout << "8. видалення тимчасового громадянина" << endl;
+    cout << "9. Exit" << endl;
     cout << ">";
 }
 int get_variant(int count) {
@@ -179,25 +226,28 @@ int main()
 {
     system("chcp 1251>nul");
     int variant;
+    int position;
     Citizen citizen;
-    Human human;
-    fstream file;
-    file.open("Test1.dat", ios::app | ios::out | ios::in | ios::binary);
+    TemporaryCitizen tcitizen;
+    fstream file, file1;
+    file.open("Citizen.dat", ios::app | ios::out | ios::in | ios::binary);
+    file1.open("TCitizen.dat", ios::app | ios::out | ios::in | ios::binary);
     // Citizen citizen("Name", "LastName", "Surname", "Nationality", "DateOfBirth", 1, "DateOfExpiry");
     // TemporaryCitizen tcitizen("Name", "LastName", "Surname", "Nationality", "DateOfBirth", 1, "DateOfExpiry");
     do {
         print_menu(); // выводим меню на экран
         char ch;
-        variant = get_variant(5); // получаем номер выбранного пункта меню
+        variant = get_variant(9); // получаем номер выбранного пункта меню
         Citizen c;
 
         switch (variant) {
         case 1:
+            
             do
             {
-                human.create();
+                citizen.create();
 
-                file.write(reinterpret_cast<char*>(&human), sizeof(human));
+                file.write(reinterpret_cast<char*>(&citizen), sizeof(citizen));
                 cout << "Сontinue(y/n)? ";
                 cin >> ch;
 
@@ -205,7 +255,16 @@ int main()
             break;
 
         case 2:
+            do
+            {
+                tcitizen.create();
 
+                file1.write(reinterpret_cast<char*>(&tcitizen), sizeof(tcitizen));
+                cout << "Сontinue(y/n)? ";
+                cin >> ch;
+
+            } while (ch == 'y');
+            break;
             break;
 
         case 3:
@@ -213,12 +272,11 @@ int main()
             file.seekg(0);
             //file.read(reinterpret_cast<char*>(&human), sizeof(human));
 
-            for (int i = 0; i < human.count(); i++)
+            for (int i = 0; i < citizen.count(); i++)
             {
-                file.read(reinterpret_cast<char*>(&human), sizeof(human));
-                cout << "\n Person: ";
-                human.print();
-
+                file.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
+                cout << "\n Person: " << i+1;
+                citizen.print();
             }
             /* while (!file.eof())
              {
@@ -226,7 +284,7 @@ int main()
                  human.print();
                  file.read(reinterpret_cast<char*>(&human), sizeof(human));
              }*/
-            cout << "in file: " << human.count() << " human\n";
+            cout << "in file: " << citizen.count() << " human\n";
             cout << "enter x for exit\n";
             cin >> ch;
             break;
@@ -234,14 +292,59 @@ int main()
 
         case 4:
         {
-            citizen.print();
+            file1.seekg(0);
+            //file.read(reinterpret_cast<char*>(&human), sizeof(human));
+
+            for (int i = 0; i < tcitizen.count(); i++)
+            {
+                file1.read(reinterpret_cast<char*>(&tcitizen), sizeof(tcitizen));
+                cout << "\n Person: " << i + 1;
+                tcitizen.print();
+            }
+            /* while (!file.eof())
+             {
+                 cout << "\n Person: ";
+                 human.print();
+                 file.read(reinterpret_cast<char*>(&human), sizeof(human));
+             }*/
+            cout << "in file: " << tcitizen.count() << " human\n";
+            cout << "enter x for exit\n";
+            cin >> ch;
+            break;
+        }
+        case 5:
+        {
+            cout << "\nEnter number person: ";
+            int n;
+            cin >> n;
+            position = (n - 1) * sizeof(Citizen);
+            file.seekg(position);
+            file.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
             break;
         }
 
+        case 6:
+        {
+            cout << "\nEnter number person: ";
+            int n;
+            cin >> n;
+            position = (n - 1) * sizeof(Citizen);
+            file1.seekg(position);
+            file1.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
+            break;
         }
 
-        if (variant != 5)
+        case 7:
+        {
+
+        }
+
+        case 8:
+        {
+        }
+        }
+        if (variant != 9)
             system("pause"); // задерживаем выполнение, чтобы пользователь мог увидеть результат выполнения выбранного пункта
-    } while (variant != 5);
+    } while (variant != 9);
     return 0;
 }

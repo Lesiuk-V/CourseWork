@@ -120,13 +120,17 @@ public:
         ifile.seekg(0, ios::end);
         int endposition = ifile.tellg();
         n = endposition / sizeof(Citizen);
+        //if (i == 0)
+        //{
+        //   /* cin >> n;
+        //    int position = (n - 1) * sizeof(Citizen);
+        //    ifile.seekg(position);
+        //    ifile.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
+        //    citizen.showData();*/
+        //}
         return n;
     }
 
-    void generate_DN()
-    {
-
-    }
 
 
     //Citizen(string name = "null", string surname = "null", string patronymic = "null",
@@ -232,12 +236,10 @@ int main()
     fstream file, file1;
     file.open("Citizen.dat", ios::app | ios::out | ios::in | ios::binary);
     file1.open("TCitizen.dat", ios::app | ios::out | ios::in | ios::binary);
-    // Citizen citizen("Name", "LastName", "Surname", "Nationality", "DateOfBirth", 1, "DateOfExpiry");
-    // TemporaryCitizen tcitizen("Name", "LastName", "Surname", "Nationality", "DateOfBirth", 1, "DateOfExpiry");
     do {
-        print_menu(); // выводим меню на экран
+        print_menu();
         char ch;
-        variant = get_variant(9); // получаем номер выбранного пункта меню
+        variant = get_variant(9);
         Citizen c;
 
         switch (variant) {
@@ -270,67 +272,59 @@ int main()
         case 3:
         {
             file.seekg(0);
-            //file.read(reinterpret_cast<char*>(&human), sizeof(human));
-
             for (int i = 0; i < citizen.count(); i++)
             {
                 file.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
                 cout << "\n Person: " << i+1;
                 citizen.print();
             }
-            /* while (!file.eof())
-             {
-                 cout << "\n Person: ";
-                 human.print();
-                 file.read(reinterpret_cast<char*>(&human), sizeof(human));
-             }*/
-            cout << "in file: " << citizen.count() << " human\n";
-            cout << "enter x for exit\n";
-            cin >> ch;
+            cout << "\nin file: " << citizen.count() << " human\n";
             break;
         }
 
         case 4:
         {
             file1.seekg(0);
-            //file.read(reinterpret_cast<char*>(&human), sizeof(human));
-
             for (int i = 0; i < tcitizen.count(); i++)
             {
                 file1.read(reinterpret_cast<char*>(&tcitizen), sizeof(tcitizen));
                 cout << "\n Person: " << i + 1;
                 tcitizen.print();
             }
-            /* while (!file.eof())
-             {
-                 cout << "\n Person: ";
-                 human.print();
-                 file.read(reinterpret_cast<char*>(&human), sizeof(human));
-             }*/
-            cout << "in file: " << tcitizen.count() << " human\n";
-            cout << "enter x for exit\n";
-            cin >> ch;
+            cout << "\nin file: " << tcitizen.count() << " human\n";
             break;
         }
         case 5:
         {
-            cout << "\nEnter number person: ";
             int n;
+            cout << "\nEnter number person: ";
             cin >> n;
-            position = (n - 1) * sizeof(Citizen);
+            if (n > citizen.count())
+            {
+                cout << "Громадянина з таким номером немає\nВведіть інше число\n";
+                break;
+            }
+            int position = (n - 1) * sizeof(Citizen);
             file.seekg(position);
             file.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
+            citizen.print();
             break;
         }
 
         case 6:
         {
-            cout << "\nEnter number person: ";
             int n;
+            cout << "\nEnter number person: ";
             cin >> n;
-            position = (n - 1) * sizeof(Citizen);
+            if (n > tcitizen.count())
+            {
+                cout << "Громадянина з таким номером немає\nВведіть інше число\n";
+                break;
+            }
+            int position = (n - 1) * sizeof(TemporaryCitizen);
             file1.seekg(position);
-            file1.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
+            file1.read(reinterpret_cast<char*>(&tcitizen), sizeof(tcitizen));
+            tcitizen.print();
             break;
         }
 

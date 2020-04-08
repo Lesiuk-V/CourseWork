@@ -1,13 +1,15 @@
-﻿#include <iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 #include <Windows.h>
 #include <cstdlib>
 #include <string.h>
 #include <fstream>
 #include <stdlib.h> 
 #include <cstring>
+#include <ctime>
 using namespace std;
 
-#define _CRT_SECURE_NO_WARNINGS
+
 
 class Human
 {
@@ -47,6 +49,7 @@ public:
         cout << "Patronymic: "; cin.getline(patronymic, 50);
         cout << "Nationality: "; cin.getline(nationality, 20);
         cout << "Date of bitrh: "; cin.getline(dateOfBirth, 11);
+        
         //  std::cout << *this << " created\n";
     }
 
@@ -72,6 +75,7 @@ public:
 
 istream& operator >> (istream& s, Human& d)
 {
+
     cout << "Name: "; s >> d.name;
     cout << "Surname: "; s >> d.surname;
     cout << "Patronymic: "; s >> d.patronymic;
@@ -92,11 +96,13 @@ class Citizen : public Human
 private:
 
     int numberDocument;
-    char dateOfExpiry[11];
+    char dateOfExpiry[15];
+    static int cCount;
 public:
+    
     Human h;
     static string typeOfDocument;
-    void setNumberDocument(int numberDocument) { this->numberDocument = numberDocument; }
+    void setNumberDocument(int n) { numberDocument = n; }
    // void setDateOfExipiry(char* dateOfExpiry) { this->dateOfExpiry = dateOfExpiry; }
     int getNumberDocument() { return numberDocument; }
     string getDateOfExpiry() { return dateOfExpiry; }
@@ -111,7 +117,15 @@ public:
         strcpy_s(nationality, _countof(nationality), "unknow");
         strcpy_s(dateOfBirth, _countof(dateOfBirth), "unknow");
         strcpy_s(dateOfExpiry, _countof(dateOfExpiry), "unknow");
+      //  numberDocument = 0;
     }
+
+    void set_data_and_number(int n)
+    {
+        cout << "Data of expiry: "; cin.ignore(); cin.getline(dateOfExpiry, 15);
+        numberDocument=n+1;
+    }
+
     virtual int count()
     {
         int n;
@@ -146,39 +160,44 @@ public:
 
     virtual void print() override
     {
-        cout << "Name: " << getName() << "\nSurname: " << getSurname() << "\nPatronymic: " << getPatronymic()
+        cout << "\nName: " << getName() << "\nSurname: " << getSurname() << "\nPatronymic: " << getPatronymic()
             << "\nNationaly: " << getNationality() << "\nDate of birth: " << getDateOfBirth() << "\nType of document: " << getTypeOfDocument()
             << "\nDoucument Number: " << getNumberDocument() << "\nDate of expiry: " << getDateOfExpiry() << endl;
     }
 };
 string Citizen::typeOfDocument = "Паспорт";
 
-
+//int Citizen::numberDocument = 0;
 class TemporaryCitizen : public Human
 {
 private:
     int numberDocument;
     static string typeOfDocument;
-    string dateOfExpiry;
+    char dateOfExpiry[11];
 public:
     void setNumberDocument(int numberDocument) { this->numberDocument = numberDocument; }
-    void setDateOfExipiry(string dateOfExpiry) { this->dateOfExpiry = dateOfExpiry; }
+   // void setDateOfExipiry(string dateOfExpiry) { this->dateOfExpiry = dateOfExpiry; }
     int getNumberDocument() { return numberDocument; }
     string getDateOfExpiry() { return dateOfExpiry; }
     string getTypeOfDocument() { return typeOfDocument; }
 
     TemporaryCitizen(string name = "null", string surname = "null", string patronymic = "null",
         string nationality = "null", string dateOfbirth = "null", int numberDocument = 0,
-        string dateOfExpiry = "null")// :Human(name, surname, patronymic, nationality, dateOfbirth)
+        string dateOfExpiry = "null")
     {
         setNumberDocument(numberDocument);
-        setDateOfExipiry(dateOfExpiry);
+      //  setDateOfExipiry(dateOfExpiry);
     }
 
+    void set_data_and_number(int n)
+    {
+        cout << "Data of expiry: "; cin.ignore(); cin.getline(dateOfExpiry, 15);
+        numberDocument = n + 1;
+    }
 
     virtual void print() override
     {
-        cout << "Name: " << getName() << "\nSurname: " << getSurname() << "\nPatronymic: " << getPatronymic()
+        cout << "\nName: " << getName() << "\nSurname: " << getSurname() << "\nPatronymic: " << getPatronymic()
             << "\nNationaly: " << getNationality() << "\nDate of birth: " << getDateOfBirth() << "\nType of document: " << getTypeOfDocument()
             << "\nDoucument Number: " << getNumberDocument() << "\nDate of expiry: " << getDateOfExpiry() << endl;
     }
@@ -230,12 +249,13 @@ int main()
 {
     system("chcp 1251>nul");
     int variant;
-    int position;
     Citizen citizen;
     TemporaryCitizen tcitizen;
     fstream file, file1;
     file.open("Citizen.dat", ios::app | ios::out | ios::in | ios::binary);
     file1.open("TCitizen.dat", ios::app | ios::out | ios::in | ios::binary);
+    citizen.setNumberDocument(citizen.count());
+    tcitizen.setNumberDocument(tcitizen.count());
     do {
         print_menu();
         char ch;
@@ -248,7 +268,7 @@ int main()
             do
             {
                 citizen.create();
-
+                citizen.set_data_and_number(citizen.getNumberDocument());
                 file.write(reinterpret_cast<char*>(&citizen), sizeof(citizen));
                 cout << "Сontinue(y/n)? ";
                 cin >> ch;
@@ -260,7 +280,7 @@ int main()
             do
             {
                 tcitizen.create();
-
+                tcitizen.set_data_and_number(tcitizen.getNumberDocument());
                 file1.write(reinterpret_cast<char*>(&tcitizen), sizeof(tcitizen));
                 cout << "Сontinue(y/n)? ";
                 cin >> ch;
@@ -270,28 +290,30 @@ int main()
             break;
 
         case 3:
+        if(citizen.count() != 0)
         {
             file.seekg(0);
             for (int i = 0; i < citizen.count(); i++)
             {
                 file.read(reinterpret_cast<char*>(&citizen), sizeof(citizen));
-                cout << "\n Person: " << i+1;
+                cout << "\n Citizen: " << i+1;
                 citizen.print();
             }
-            cout << "\nin file: " << citizen.count() << " human\n";
+            cout << "\nin file: " << citizen.count() << " citizen\n";
             break;
         }
-
+        cout << "В файлі немає записів\n";
+        break;
         case 4:
         {
             file1.seekg(0);
             for (int i = 0; i < tcitizen.count(); i++)
             {
                 file1.read(reinterpret_cast<char*>(&tcitizen), sizeof(tcitizen));
-                cout << "\n Person: " << i + 1;
+                cout << "\n Temporary citizen: " << i + 1 << endl;
                 tcitizen.print();
             }
-            cout << "\nin file: " << tcitizen.count() << " human\n";
+            cout << "\nin file: " << tcitizen.count() << " temporary citizen\n";
             break;
         }
         case 5:
@@ -337,7 +359,7 @@ int main()
         {
         }
         }
-        if (variant != 9)
+        if (variant != 9 || variant =='t')
             system("pause"); // задерживаем выполнение, чтобы пользователь мог увидеть результат выполнения выбранного пункта
     } while (variant != 9);
     return 0;

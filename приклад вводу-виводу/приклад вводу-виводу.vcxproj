@@ -147,7 +147,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Citizen.cpp" />
+    <ClCompile Include="Human.cpp" />
+    <ClCompile Include="TemporaryCitizen.cpp" />
     <ClCompile Include="приклад вводу-виводу.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Citizen.h" />
+    <ClInclude Include="Human.h" />
+    <ClInclude Include="TemporaryCitizen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

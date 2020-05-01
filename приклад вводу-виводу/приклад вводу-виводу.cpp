@@ -1,5 +1,6 @@
 ﻿#include <stdlib.h>
 #include <iostream>
+#include <iomanip>
 #include "Citizen.h"
 #include "TemporaryCitizen.h"
 using namespace std;
@@ -20,11 +21,22 @@ void print_menu() {
     cout << ">";
 }
 int get_variant(int count) {
-    int variant;
-    cin >> variant;
+    int variant=0;
+    cin >> setw(2)>> variant;
+    while (!cin.good())
+    {
+        cout << "Помилка: неправильний ввід. Спробуйте ще раз\n";
+
+        cin.clear();
+        cin.ignore(INT_MAX,'\n');
+
+
+        cout << ">";
+        cin >> setw(2) >> variant;
+    }
     if (variant > count)
     {
-        cerr << "Error\n";
+        cout << "Помилка! неправильний ввід. Спробуйте ще раз\n";
         return 0;
     }
     return variant;
@@ -102,7 +114,7 @@ int main()
                 cout << "3. Пошук за датою народження" << endl;
                 cout << "4. Пошук за за національністю" << endl;
                 cout << "5. пошук за номером документа" << endl;
-                cin >> variant;
+                variant = get_variant(5);
                 switch (variant)
                 {
                 case 1:
@@ -137,7 +149,7 @@ int main()
                 cout << "3. Пошук за датою народження" << endl;
                 cout << "4. Пошук за за національністю" << endl;
                 cout << "5. пошук за номером документа" << endl;
-                cin >> variant;
+                variant = get_variant(5);
                 switch (variant)
                 {
                 case 1:

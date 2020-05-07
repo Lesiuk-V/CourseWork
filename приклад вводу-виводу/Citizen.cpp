@@ -47,7 +47,7 @@ void Citizen::write()
 void Citizen::set_data_and_number(int n)
 {
     cout << "Дійсний до: "; cin >> dateOfExpiry;
-    if (n == 24403223)
+    if (n <10000)
         numberDocument = 1;
     else
         numberDocument = n + 1;

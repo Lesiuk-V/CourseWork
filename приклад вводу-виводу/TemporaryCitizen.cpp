@@ -48,7 +48,7 @@ void TemporaryCitizen::write()
 void TemporaryCitizen::set_data_and_number(int n)
 {
     cout << "Дійсний до: "; cin >> dateOfExpiry;
-    if (n == 22369621)
+    if (n < 1000)
         numberDocument = 1;
     else
         numberDocument = n + 1;

@@ -20,28 +20,27 @@ void print_menu() {
     cout << "11. Вихід" << endl;
     cout << ">";
 }
+
+void printSearchMenu()
+{
+    cout << "Пошук за полем: \n";
+    cout << "1. Ім'я" << endl;
+    cout << "2. Прізвище" << endl;
+    cout << "3. По батькові" << endl;
+    cout << "4. Національність" << endl;
+    cout << "5. Дата народження" << endl;
+    cout << "6. Номером документа" << endl;
+}
 int get_variant(int count) {
-    int variant=0;
-    cin >> setw(2)>> variant;
-    while (!cin.good())
-    {
-        cout << "Помилка: неправильний ввід. Спробуйте ще раз\n";
-
-        cin.clear();
-        cin.ignore(INT_MAX,'\n');
-
-
-        cout << ">";
-        cin >> setw(2) >> variant;
-    }
+    int variant;
+    cin >> variant;
     if (variant > count)
     {
-        cout << "Помилка! неправильний ввід. Спробуйте ще раз\n";
+        cerr << "Error\n";
         return 0;
     }
     return variant;
 }
-
 int main()
 {
     system("chcp 1251>nul");
@@ -109,12 +108,8 @@ int main()
         case 5:
             do
             {
-                cout << "1. Пошук за іменем" << endl;
-                cout << "2. Пошук за фамілією" << endl;
-                cout << "3. Пошук за датою народження" << endl;
-                cout << "4. Пошук за за національністю" << endl;
-                cout << "5. пошук за номером документа" << endl;
-                variant = get_variant(5);
+                printSearchMenu();
+                variant = get_variant(6);
                 switch (variant)
                 {
                 case 1:
@@ -126,14 +121,15 @@ int main()
                     break;
 
                 case 3:
+                    citizen.searchPatronymic();
+                    break;
+                case 4:
                     citizen.searchDateOfBirth();
                     break;
-
-                case 4:
+                case 5:
                     citizen.searchNationality();
                     break;
-
-                case 5:
+                case 6:
                     citizen.searchDN();
                     break;
                 }
@@ -144,31 +140,26 @@ int main()
         case 6:
             do
             {
-                cout << "1. Пошук за іменем" << endl;
-                cout << "2. Пошук за фамілією" << endl;
-                cout << "3. Пошук за датою народження" << endl;
-                cout << "4. Пошук за за національністю" << endl;
-                cout << "5. пошук за номером документа" << endl;
-                variant = get_variant(5);
+                printSearchMenu();
+                variant = get_variant(6);
                 switch (variant)
                 {
                 case 1:
                     tcitizen.searchName();
                     break;
-
                 case 2:
                     tcitizen.searchSurname();
                     break;
-
                 case 3:
+                    tcitizen.searchPatronymic();
+                    break;
+                case 4:
                     tcitizen.searchDateOfBirth();
                     break;
-
-                case 4:
+                case 5:
                     tcitizen.searchNationality();
                     break;
-
-                case 5:
+                case 6:
                     tcitizen.searchDN();
                     break;
                 }

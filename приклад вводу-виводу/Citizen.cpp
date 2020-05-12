@@ -3,6 +3,8 @@
 #include <fstream>
 using namespace std;
 
+int Citizen::numberDocument = 1;
+
 void Citizen::create()
 {
     cin.ignore(10, '\n');
@@ -38,19 +40,16 @@ void Citizen::read(int pn)
 
 void Citizen::write()
 {
-    ofstream ofile;
-    ofile.open("Citizen.dat", ios::app | ios::binary | ios::out | ios::in);
-    ofile.write((char*)this, sizeof(*this));
-    ofile.close();
+        ofstream ofile;
+        ofile.open("Citizen.dat", ios::app | ios::binary | ios::out | ios::in);
+        ofile.write((char*)this, sizeof(*this));
+        ofile.close();
 }
 
 void Citizen::set_data_and_number(int n)
 {
     cout << "Дійсний до: "; cin >> dateOfExpiry;
-    if (n <10000)
-        numberDocument = 1;
-    else
-        numberDocument = n + 1;
+    numberDocument = n + 1;
 }
 
 int Citizen::count()
@@ -99,6 +98,27 @@ void Citizen::searchSurname()
         ifile.seekg(i * sizeof(Citizen));
         ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
         if (0 == strcmp(str, citizen.surname))
+        {
+            citizen.showData();
+        }
+    }
+    ifile.close();
+}
+
+void Citizen::searchPatronymic()
+{
+    Citizen citizen;
+    ifstream ifile;
+    char str[40];
+    ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
+    ifile.seekg(0);
+    cout << "Введіть по батькові для пошуку: ";
+    cin >> str;
+    for (int i = 0; i < count(); i++)
+    {
+        ifile.seekg(i * sizeof(Citizen));
+        ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
+        if (0 == strcmp(str, citizen.patronymic))
         {
             citizen.showData();
         }

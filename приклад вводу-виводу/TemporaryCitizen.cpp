@@ -3,6 +3,8 @@
 #include <fstream>
 using namespace std;
 
+int TemporaryCitizen::numberDocument = 1;
+
 void TemporaryCitizen::create()
 {
     cin.ignore(10, '\n');
@@ -48,21 +50,16 @@ void TemporaryCitizen::write()
 void TemporaryCitizen::set_data_and_number(int n)
 {
     cout << "Дійсний до: "; cin >> dateOfExpiry;
-    if (n < 1000)
-        numberDocument = 1;
-    else
-        numberDocument = n + 1;
+    numberDocument = n + 1;
 }
 
 int TemporaryCitizen::count()
 {
-    {
         ifstream ifile;
         ifile.open("Tcitizen.dat ", ios::binary);
         ifile.seekg(0, ios::end);
         return (int)ifile.tellg() / sizeof(TemporaryCitizen);
         ifile.close();
-    }
 }
 
 #pragma region TCitizen Search
@@ -106,6 +103,28 @@ void TemporaryCitizen::searchSurname()
     }
     ifile.close();
 }
+
+void TemporaryCitizen::searchPatronymic()
+{
+    TemporaryCitizen tcitizen;
+    ifstream ifile;
+    char str[40];
+    ifile.open("Tcitizen.dat", ios::binary | ios::out | ios::in);
+    ifile.seekg(0);
+    cout << "Введіть по батькові для пошуку: ";
+    cin >> str;
+    for (int i = 0; i < count(); i++)
+    {
+        ifile.seekg(i * sizeof(TemporaryCitizen));
+        ifile.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
+        if (0 == strcmp(str, tcitizen.patronymic))
+        {
+            tcitizen.showData();
+        }
+    }
+    ifile.close();
+}
+
 void TemporaryCitizen::searchNationality()
 {
     TemporaryCitizen tcitizen;

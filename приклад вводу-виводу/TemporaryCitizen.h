@@ -3,7 +3,7 @@
 class TemporaryCitizen : public Human
 {
 private:
-    int numberDocument;
+    static int numberDocument;
     static char typeOfDocument[30];
     char dateOfExpiry[11];
 public:
@@ -15,6 +15,7 @@ public:
     static int count();
     void searchName();
     void searchSurname();
+    void searchPatronymic();
     void searchNationality();
     void searchDateOfBirth();
     void searchDN();

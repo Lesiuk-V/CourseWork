@@ -3,8 +3,6 @@
 #include <fstream>
 using namespace std;
 
-int TemporaryCitizen::numberDocument = 1;
-
 void TemporaryCitizen::create()
 {
     cin.ignore(10, '\n');
@@ -62,134 +60,74 @@ int TemporaryCitizen::count()
         ifile.close();
 }
 
-#pragma region TCitizen Search
-void TemporaryCitizen::searchName()
+int TemporaryCitizen::search(int variant)
 {
+    if (variant == 0)
+        return 0;
     TemporaryCitizen tcitizen;
     ifstream ifile;
     char str[40];
-    ifile.open("Tcitizen.dat", ios::binary | ios::out | ios::in);
+    ifile.open("TCitizen.dat", ios::binary | ios::out | ios::in);
     ifile.seekg(0);
-    cout << "¬вед≥ть ≥м'€ дл€ пошуку: ";
+    cout << "¬вед≥ть дан≥ дл€ пошуку: ";
     cin >> str;
     for (int i = 0; i < count(); i++)
     {
         ifile.seekg(i * sizeof(TemporaryCitizen));
         ifile.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
-        if (0 == strcmp(str, tcitizen.name))
+
+        switch (variant)
         {
-            tcitizen.showData();
+        case 1:
+            if (0 == strcmp(str, tcitizen.name))
+            {
+                tcitizen.showData();
+            }
+            break;
+
+        case 2:
+            if (0 == strcmp(str, tcitizen.surname))
+            {
+                tcitizen.showData();
+            }
+            break;
+        case 3:
+            if (0 == strcmp(str, tcitizen.patronymic))
+            {
+                tcitizen.showData();
+            }
+            break;
+        case 4:
+            if (0 == strcmp(str, tcitizen.nationality))
+            {
+                tcitizen.showData();
+            }
+            break;
+        case 5:
+            if (0 == strcmp(str, tcitizen.dateOfBirth))
+            {
+                tcitizen.showData();
+            }
+            break;
+        case 6:
+
+            if (atoi(str) == tcitizen.numberDocument)
+            {
+                tcitizen.showData();
+            }
+            break;
+        case 7:
+            if (0 == strcmp(str, tcitizen.dateOfExpiry))
+            {
+                tcitizen.showData();
+            }
+            break;
+        default:
+            break;
         }
     }
     ifile.close();
 }
-void TemporaryCitizen::searchSurname()
-{
-    TemporaryCitizen tcitizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Tcitizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть пр≥звище дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(TemporaryCitizen));
-        ifile.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
-        if (0 == strcmp(str, tcitizen.surname))
-        {
-            tcitizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void TemporaryCitizen::searchPatronymic()
-{
-    TemporaryCitizen tcitizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Tcitizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть по батьков≥ дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(TemporaryCitizen));
-        ifile.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
-        if (0 == strcmp(str, tcitizen.patronymic))
-        {
-            tcitizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void TemporaryCitizen::searchNationality()
-{
-    TemporaryCitizen tcitizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Tcitizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть нац≥оннальн≥сть дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(TemporaryCitizen));
-        ifile.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
-        if (0 == strcmp(str, tcitizen.nationality))
-        {
-            tcitizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void TemporaryCitizen::searchDateOfBirth()
-{
-    TemporaryCitizen tcitizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Tcitizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть дату народженн€ дл€ пошуку(день.м≥с€ць.р≥к): ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(TemporaryCitizen));
-        ifile.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
-        if (0 == strcmp(str, tcitizen.dateOfBirth))
-        {
-            tcitizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void TemporaryCitizen::searchDN()
-{
-    TemporaryCitizen tcitizen;
-    ifstream ifile;
-    int str;
-    ifile.open("Tcitizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть номер документа дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(TemporaryCitizen));
-        ifile.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
-        if (str == tcitizen.numberDocument)
-        {
-            tcitizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-#pragma endregion
-
 
 #pragma region delete and edit Tcitizen
 

@@ -30,13 +30,14 @@ void printSearchMenu()
     cout << "4. Національність" << endl;
     cout << "5. Дата народження" << endl;
     cout << "6. Номером документа" << endl;
+    cout << "7. Дійсний до" << endl;
 }
 int get_variant(int count) {
     int variant;
     cin >> variant;
     if (variant > count)
     {
-        cerr << "Error\n";
+        cerr << "Помилка! Неправильний ввід\n";
         return 0;
     }
     return variant;
@@ -109,63 +110,21 @@ int main()
             do
             {
                 printSearchMenu();
-                variant = get_variant(6);
-                switch (variant)
-                {
-                case 1:
-                    citizen.searchName();
-                    break;
-
-                case 2:
-                    citizen.searchSurname();
-                    break;
-
-                case 3:
-                    citizen.searchPatronymic();
-                    break;
-                case 4:
-                    citizen.searchDateOfBirth();
-                    break;
-                case 5:
-                    citizen.searchNationality();
-                    break;
-                case 6:
-                    citizen.searchDN();
-                    break;
-                }
+                variant = get_variant(7);
+                citizen.search(variant);
                 break;
                 system("pause");
-            } while (variant != 5);
+            } while (variant != 8);
             break;
         case 6:
             do
             {
                 printSearchMenu();
-                variant = get_variant(6);
-                switch (variant)
-                {
-                case 1:
-                    tcitizen.searchName();
-                    break;
-                case 2:
-                    tcitizen.searchSurname();
-                    break;
-                case 3:
-                    tcitizen.searchPatronymic();
-                    break;
-                case 4:
-                    tcitizen.searchDateOfBirth();
-                    break;
-                case 5:
-                    tcitizen.searchNationality();
-                    break;
-                case 6:
-                    tcitizen.searchDN();
-                    break;
-                }
+                variant = get_variant(7);
+                tcitizen.search(variant);
                 break;
                 system("pause");
-            } while (variant != 5);
+            } while (variant != 8);
             break;
         case 7:
             citizen.deleteData();

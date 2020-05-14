@@ -3,7 +3,7 @@
 class Citizen : public Human
 {
 private:
-    static int numberDocument;
+    int numberDocument=0;
     static char typeOfDocument[20];
     char dateOfExpiry[11];
 public:
@@ -13,12 +13,7 @@ public:
     void write();
     void set_data_and_number(int n);
     static int count();
-    void searchName();
-    void searchSurname();
-    void searchPatronymic();
-    void searchNationality();
-    void searchDateOfBirth();
-    void searchDN();
+    int search(int variant);
     void deleteData();
     void editData();
 };

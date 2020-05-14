@@ -1,9 +1,9 @@
 #include "Citizen.h"
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 using namespace std;
 
-int Citizen::numberDocument = 1;
 
 void Citizen::create()
 {
@@ -63,133 +63,77 @@ int Citizen::count()
 
 #pragma region SearchCitizen
 
-void Citizen::searchName()
+
+
+
+int Citizen::search(int variant)
 {
+    if (variant == 0)
+        return 0;
     Citizen citizen;
     ifstream ifile;
     char str[40];
     ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
     ifile.seekg(0);
-    cout << "¬вед≥ть ≥м'€ дл€ пошуку: ";
+    cout << "¬вед≥ть дан≥ дл€ пошуку: ";
     cin >> str;
     for (int i = 0; i < count(); i++)
     {
         ifile.seekg(i * sizeof(Citizen));
         ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
-        if (0 == strcmp(str, citizen.name))
+
+        switch (variant)
         {
-            citizen.showData();
+        case 1:
+            if (0 == strcmp(str, citizen.name))
+            {
+                citizen.showData();
+            }
+            break;
+
+        case 2:
+            if (0 == strcmp(str, citizen.surname))
+            {
+                citizen.showData();
+            }
+            break;
+        case 3:
+            if (0 == strcmp(str, citizen.patronymic))
+            {
+                citizen.showData();
+            }
+            break;
+        case 4:
+            if (0 == strcmp(str, citizen.nationality))
+            {
+                citizen.showData();
+            }
+            break;
+        case 5 :
+            if (0 == strcmp(str, citizen.dateOfBirth))
+            {
+                citizen.showData();
+            }
+            break;
+        case 6:
+            
+            if (atoi(str) == citizen.numberDocument)
+            {
+                citizen.showData();
+            }
+            break;
+        case 7:
+            if (0 == strcmp(str, citizen.dateOfExpiry))
+            {
+                citizen.showData();
+            }
+            break;
+        default:
+            break;
         }
     }
     ifile.close();
 }
-
-void Citizen::searchSurname()
-{
-    Citizen citizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть пр≥звище дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(Citizen));
-        ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
-        if (0 == strcmp(str, citizen.surname))
-        {
-            citizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void Citizen::searchPatronymic()
-{
-    Citizen citizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть по батьков≥ дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(Citizen));
-        ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
-        if (0 == strcmp(str, citizen.patronymic))
-        {
-            citizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void Citizen::searchNationality()
-{
-    Citizen citizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть нац≥оннальн≥сть дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(Citizen));
-        ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
-        if (0 == strcmp(str, citizen.nationality))
-        {
-            citizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void Citizen::searchDateOfBirth()
-{
-    Citizen citizen;
-    ifstream ifile;
-    char str[40];
-    ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть дату народженн€ дл€ пошуку(день.м≥с€ць.р≥к): ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(Citizen));
-        ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
-        if (0 == strcmp(str, citizen.dateOfBirth))
-        {
-            citizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-void Citizen::searchDN()
-{
-    Citizen citizen;
-    ifstream ifile;
-    int str;
-    ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
-    ifile.seekg(0);
-    cout << "¬вед≥ть номер документа дл€ пошуку: ";
-    cin >> str;
-    for (int i = 0; i < count(); i++)
-    {
-        ifile.seekg(i * sizeof(Citizen));
-        ifile.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
-        if (str == citizen.numberDocument)
-        {
-            citizen.showData();
-        }
-    }
-    ifile.close();
-}
-
-#pragma endregion
 
 
 #pragma region Delete adn edit data

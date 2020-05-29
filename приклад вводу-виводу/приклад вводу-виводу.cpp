@@ -32,15 +32,32 @@ void printSearchMenu()
     cout << "6. Номером документа" << endl;
     cout << "7. Дійсний до" << endl;
 }
-int get_variant(int count) {
-    int variant;
-    cin >> variant;
-    if (variant > count)
+int get_variant(int max) {
+    double input = -1;
+    bool valid = false;
+    do
     {
-        cerr << "Помилка! Неправильний ввід\n";
-        return 0;
-    }
-    return variant;
+        cin >> input;
+        if (cin.good())
+        {
+            valid = true;
+            if (input < max)
+                return input;
+            else
+            {
+                valid = false;
+                cout << "Помилка вводу. Введіть ще раз" << endl;
+            }
+                
+        }
+        else
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Помилка вводу. Введіть ще раз" << endl;
+        }
+    } while (!valid);
+    return input;
 }
 int main()
 {
@@ -138,6 +155,8 @@ int main()
         case 10:
             tcitizen.editData();
             break;
+        default:
+            cout << "Введіть число від 1 до 11\n";
         }
         if (variant != 11 || variant == 't')
             system("pause");

@@ -139,6 +139,7 @@ int TemporaryCitizen::search(int variant)
             }
             break;
         default:
+            cout << "Помилка вводу. Введіть ще раз\n";
             break;
         }
     }

@@ -1,9 +1,28 @@
 #include "Citizen.h"
 #include <iostream>
 #include <fstream>
-#include <stdlib.h>
+#include <string>
 using namespace std;
 
+int Citizen::setNumberDocument()
+{
+    int id;
+    string str;
+    fstream file;
+    file.open("id.txt", fstream::out | fstream::in);
+    ifstream temp;
+    while (!file.eof())
+    {
+        getline(file, str);
+        id = atoi(str.c_str());
+    }
+    ++id;
+    file.close();
+    file.open("id.txt", fstream::out | fstream::in);
+    file << id;
+    file.close();
+    return id;
+}
 
 void Citizen::create()
 {
@@ -13,7 +32,8 @@ void Citizen::create()
     cout << "По батькові: "; cin >> patronymic;
     cout << "Національність: "; cin >> nationality;
     cout << "Дата народження: "; cin >> dateOfBirth;
-    set_data_and_number(count());
+    cout << "Дійсний до: "; cin >> dateOfExpiry;                
+    numberDocument=setNumberDocument();
 }
 
 void Citizen::showData()
@@ -36,20 +56,20 @@ void Citizen::read(int pn)
     ifile.seekg(pn * sizeof(Citizen));
     ifile.read((char*)this, sizeof(*this));
     ifile.close();
+    //ifstream ifile;
+    //ifile.open("Play.dat", ios::binary | ios::out | ios::in);
+    //ifile.seekg(0);
+    //ifile.seekg(p * sizeof(Play));
+    //ifile.read((char*)this, sizeof(*this));
+    //ifile.close();
 }
 
 void Citizen::write()
 {
-        ofstream ofile;
-        ofile.open("Citizen.dat", ios::app | ios::binary | ios::out | ios::in);
-        ofile.write((char*)this, sizeof(*this));
-        ofile.close();
-}
-
-void Citizen::set_data_and_number(int n)
-{
-    cout << "Дійсний до: "; cin >> dateOfExpiry;
-    numberDocument = n + 1;
+    ofstream ofile;
+    ofile.open("Citizen.dat", ios::app | ios::binary | ios::out | ios::in);
+    ofile.write((char*)this, sizeof(*this));
+    ofile.close();
 }
 
 int Citizen::count()
@@ -62,9 +82,6 @@ int Citizen::count()
 }
 
 #pragma region SearchCitizen
-
-
-
 
 int Citizen::search(int variant)
 {

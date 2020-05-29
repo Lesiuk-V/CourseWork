@@ -3,7 +3,7 @@
 class Citizen : public Human
 {
 private:
-    int numberDocument=0;
+    int numberDocument;
     static char typeOfDocument[20];
     char dateOfExpiry[11];
 public:
@@ -11,9 +11,9 @@ public:
     virtual void showData() override;
     void read(int pn);
     void write();
-    void set_data_and_number(int n);
     static int count();
     int search(int variant);
     void deleteData();
     void editData();
-};
+    int setNumberDocument();
+};  

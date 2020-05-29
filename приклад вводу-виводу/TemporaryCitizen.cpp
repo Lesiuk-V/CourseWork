@@ -1,7 +1,28 @@
 #include "TemporaryCitizen.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
+
+int TemporaryCitizen::setNumberDocument()
+{
+    int id;
+    string str;
+    fstream idfile;
+    idfile.open("TCitizenId.txt", fstream::out | fstream::in);
+    ifstream temp;
+    while (!idfile.eof())
+    {
+        getline(idfile, str);
+        id = atoi(str.c_str());
+    }
+    ++id;
+    idfile.close();
+    idfile.open("TCitizenId.txt", fstream::out | fstream::in);
+    idfile << id;
+    idfile.close();
+    return id;
+}
 
 void TemporaryCitizen::create()
 {
@@ -11,7 +32,8 @@ void TemporaryCitizen::create()
     cout << "По батькові: "; cin >> patronymic;
     cout << "Національність: "; cin >> nationality;
     cout << "Дата народження: "; cin >> dateOfBirth;
-    set_data_and_number(count());
+    cout << "Дійсний до: "; cin >> dateOfExpiry;
+    numberDocument = setNumberDocument();                   
 }
 
 void TemporaryCitizen::showData()
@@ -45,19 +67,13 @@ void TemporaryCitizen::write()
     ofile.close();
 }
 
-void TemporaryCitizen::set_data_and_number(int n)
-{
-    cout << "Дійсний до: "; cin >> dateOfExpiry;
-    numberDocument = n + 1;
-}
-
 int TemporaryCitizen::count()
 {
-        ifstream ifile;
-        ifile.open("Tcitizen.dat ", ios::binary);
-        ifile.seekg(0, ios::end);
-        return (int)ifile.tellg() / sizeof(TemporaryCitizen);
-        ifile.close();
+    ifstream ifile;
+    ifile.open("Tcitizen.dat ", ios::binary);
+    ifile.seekg(0, ios::end);
+    return (int)ifile.tellg() / sizeof(TemporaryCitizen);
+    ifile.close();
 }
 
 int TemporaryCitizen::search(int variant)

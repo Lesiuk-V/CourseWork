@@ -41,7 +41,7 @@ int get_variant(int max) {
         if (cin.good())
         {
             valid = true;
-            if (input < max)
+            if (input >0 && input < max)
                 return input;
             else
             {

@@ -45,7 +45,7 @@ void TemporaryCitizen::showData()
     cout << "По батькові: " << patronymic << endl;
     cout << "Національність: " << nationality << endl;
     cout << "Дата народження: " << dateOfBirth << endl;
-    cout << "Дійсний до: " << dateOfExpiry << endl;
+    cout << "Дійсний до: " << dateOfExpiry << endl << endl;
 }
 
 void TemporaryCitizen::read(int pn)

@@ -8,6 +8,6 @@ protected:
     char nationality[40];
     char dateOfBirth[11];
 public:
-    virtual void create();
-    virtual void showData();
+    virtual void create()=0;
+    virtual void showData()=0;
 };

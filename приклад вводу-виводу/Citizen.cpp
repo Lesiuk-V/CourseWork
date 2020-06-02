@@ -45,7 +45,7 @@ void Citizen::showData()
     cout << "По батькові: " << patronymic << endl;
     cout << "Національність: " << nationality << endl;
     cout << "Дата народження: " << dateOfBirth << endl;
-    cout << "Дійсний до: " << dateOfExpiry << endl;
+    cout << "Дійсний до: " << dateOfExpiry << endl << endl;;
 }
 
 void Citizen::read(int pn)
@@ -56,12 +56,6 @@ void Citizen::read(int pn)
     ifile.seekg(pn * sizeof(Citizen));
     ifile.read((char*)this, sizeof(*this));
     ifile.close();
-    //ifstream ifile;
-    //ifile.open("Play.dat", ios::binary | ios::out | ios::in);
-    //ifile.seekg(0);
-    //ifile.seekg(p * sizeof(Play));
-    //ifile.read((char*)this, sizeof(*this));
-    //ifile.close();
 }
 
 void Citizen::write()

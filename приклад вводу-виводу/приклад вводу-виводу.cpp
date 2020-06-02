@@ -4,20 +4,39 @@
 #include "Citizen.h"
 #include "TemporaryCitizen.h"
 using namespace std;
-void print_menu() {
+void print_citizen_menu()
+{
+    system("cls");
+    cout << "          Громадяни\n" << endl;
+    cout << "1.  Дадати данні громадянина" << endl;
+    cout << "2.  Переглянути данні всіх громадян" << endl;
+    cout << "3.  Пошук громадян" << endl;
+    cout << "4.  Редагування данних громадянина" << endl;
+    cout << "5.  Видалиння даних громадянина" << endl;
+    cout << "6. Вихід" << endl;
+    cout << ">";
+}
+
+void print_Tcitizen_menu()
+{
+    system("cls");
+    cout << "          Тимчасові громадяни\n" << endl;
+    cout << "1.  Дадати данні" << endl;
+    cout << "2.  Переглянути данні" << endl;
+    cout << "3.  Пошук" << endl;
+    cout << "4.  Редагування даних" << endl;
+    cout << "5.  Видалиння даних" << endl;
+    cout << "6. Вихід" << endl;
+    cout << ">";
+}
+
+void print_menu() 
+{
     system("cls");
     cout << "          Міграційна служба\n" << endl;
-    cout << "1.  додати громадянина" << endl;
-    cout << "2.  додати тимчасового громадянина" << endl;
-    cout << "3.  переглянути громадян" << endl;
-    cout << "4.  переглянути тимчасових громадян" << endl;
-    cout << "5.  пошук громадян" << endl;
-    cout << "6.  пошук тимчасових громадян" << endl;
-    cout << "7.  видалення громадянина" << endl;
-    cout << "8.  видалення тимчасових громадян" << endl;
-    cout << "9.  редагування громадян " << endl;
-    cout << "10. редагування тимчасових громадян" << endl;
-    cout << "11. Вихід" << endl;
+    cout << "1.  Грамадяни" << endl;
+    cout << "2.  Тимчасові громадяни" << endl;
+    cout << "3. Вихід" << endl;
     cout << ">";
 }
 
@@ -41,14 +60,13 @@ int get_variant(int max) {
         if (cin.good())
         {
             valid = true;
-            if (input >0 && input < max)
+            if (input >0 && input <= max)
                 return input;
             else
             {
                 valid = false;
                 cout << "Помилка вводу. Введіть ще раз" << endl;
             }
-                
         }
         else
         {
@@ -63,103 +81,126 @@ int main()
 {
     system("chcp 1251>nul");
     int variant;
-    string str;
     Citizen citizen;
     int n;
     TemporaryCitizen tcitizen;
     do {
         print_menu();
         char ch;
-        variant = get_variant(11);
-        Citizen c;
+        variant = get_variant(3);
+        switch (variant) 
+        {
+            case 1:
 
-        switch (variant) {
-        case 1:
+                do
+                {
+                    print_citizen_menu();
+                    variant = get_variant(6);
+                    switch (variant)
+                    {
+                    case 1:
 
-            do
-            {
-                cout << "Введіть дані громадянина: ";
-                citizen.create();
-                citizen.write();
-                cout << "Продовжити ввід?(т/н)?";
-                cin >> ch;
-            } while (ch == 'т');
+                        do
+                        {
 
-            break;
+                            cout << "Введіть дані громадянина: ";
+                            citizen.create();
+                            citizen.write();
+                            cout << "Продовжити ввід?(т/н)?";
+                            cin >> ch;
+                        } while (ch == 'т');
+                        break;
+                    case 2:
+                        n = Citizen::count();
+                        cout << "У файлі " << n << " громадян\n";
+                        for (int j = 1; j < n + 1; j++)
+                        {
+                            cout << "\n Громадянин " << j << endl;
+                            citizen.read(j - 1);
+                            citizen.showData();
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        do
+                        {
+                            printSearchMenu();
+                            variant = get_variant(7);
+                            citizen.search(variant);
+                            break;
+                            system("pause");
+                        } while (variant != 8);
+                        break;
+                    case 4:
+                        citizen.editData();
+                        break;
+                    case 5:
 
-        case 2:
-            do
-            {
-                cout << "Введыть даны тимчасового громадянина: ";
-                tcitizen.create();
-                tcitizen.write();
-                cout << "Породивжити(т/н)?";
-                cin >> ch;
-            } while (ch == 'т');
+                        citizen.deleteData();
+                        break;
+                    }
+                    if (variant != 6)
+                        system("pause");
+                } while (variant != 6);
 
-            break;
-
-        case 3:
-            n = Citizen::count();
-            cout << "У файлі " << n << " громадян\n";
-            for (int j = 1; j < n + 1; j++)
-            {
-                cout << "\n Громадянин " << j << endl;
-                citizen.read(j - 1);
-                citizen.showData();
-                cout << endl;
-            }
-            cout << endl;
-            break;
-        case 4:
-            n = TemporaryCitizen::count();
-            cout << "У файлі " << n << " тимчасових громадян";
-            for (int j = 1; j < n + 1; j++)
-            {
-                cout << "\n Тимчасовий громадянин" << j << endl;
-                tcitizen.read(j - 1);
-                tcitizen.showData();
-                cout << endl;
-            }
-            cout << endl;
-            break;
-        case 5:
-            do
-            {
-                printSearchMenu();
-                variant = get_variant(7);
-                citizen.search(variant);
                 break;
-                system("pause");
-            } while (variant != 8);
-            break;
-        case 6:
-            do
-            {
-                printSearchMenu();
-                variant = get_variant(7);
-                tcitizen.search(variant);
+
+            case 2:
+                do
+                {
+                    print_Tcitizen_menu();
+                    variant = get_variant(6);
+                    switch (variant)
+                    {
+                    case 1:
+
+                        break;
+                        do
+                        {
+                            cout << "Введыть даны тимчасового громадянина: ";
+                            tcitizen.create();
+                            tcitizen.write();
+                            cout << "Породивжити(т/н)?";
+                            cin >> ch;
+                        } while (ch == 'т');
+                        break;
+                    case 2:
+                        n = TemporaryCitizen::count();
+                        cout << "У файлі " << n << " тимчасових громадян";
+                        for (int j = 1; j < n + 1; j++)
+                        {
+                            cout << "\n Тимчасовий громадянин" << j << endl;
+                            tcitizen.read(j - 1);
+                            tcitizen.showData();
+                            cout << endl;
+                        }
+                        cout << endl;
+                        break;
+                    case 3:
+                        do
+                        {
+                            printSearchMenu();
+                            variant = get_variant(7);
+                            tcitizen.search(variant);
+                            break;
+                            system("pause");
+                        } while (variant != 8);
+                        break;
+                    case 4:
+                        tcitizen.editData();
+                        break;
+                    case 5:
+                        tcitizen.deleteData();
+                        break;
+                    }
+                    if (variant != 6)
+                        system("pause");
+                } while (variant != 6);
                 break;
-                system("pause");
-            } while (variant != 8);
-            break;
-        case 7:
-            citizen.deleteData();
-            break;
-        case 8:
-            tcitizen.deleteData();
-            break;
-        case 9:
-            citizen.editData();
-            break;
-        case 10:
-            tcitizen.editData();
-            break;
-        default:
-            cout << "Введіть число від 1 до 11\n";
         }
-        if (variant != 11 || variant == 't')
+        if (variant != 3)
             system("pause");
-    } while (variant != 11);
+    } while (variant != 3);
     return 0;
 }

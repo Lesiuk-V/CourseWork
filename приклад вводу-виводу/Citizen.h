@@ -14,6 +14,6 @@ public:
     static int count();
     int search(int variant);
     void deleteData();
-    void editData();
+    void editData();    
     int setNumberDocument();
 };  

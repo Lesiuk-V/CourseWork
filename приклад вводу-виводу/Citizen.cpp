@@ -86,7 +86,7 @@ int Citizen::search(int variant)
     char str[40];
     ifile.open("Citizen.dat", ios::binary | ios::out | ios::in);
     ifile.seekg(0);
-    cout << "¬вед≥ть дан≥ дл€ пошуку: ";
+    cout << "\n¬вед≥ть дан≥ дл€ пошуку: ";
     cin >> str;
     for (int i = 0; i < count(); i++)
     {

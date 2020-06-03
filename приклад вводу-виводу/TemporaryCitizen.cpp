@@ -152,7 +152,7 @@ void TemporaryCitizen::deleteData()
 {
     TemporaryCitizen tcitizen;
     int str;
-    cout << "¬вед≥ть номер документа дл€ видаленн€: ";
+    cout << "\n¬вед≥ть номер документа дл€ видаленн€: ";
     cin >> str;
     ifstream file;
     file.open("Tcitizen.dat", ios::binary | ios::out | ios::in);

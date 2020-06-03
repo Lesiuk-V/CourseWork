@@ -42,7 +42,7 @@ void print_menu()
 
 void printSearchMenu()
 {
-    cout << "Пошук за полем: \n";
+    cout << "\n\nПошук за полем: \n";
     cout << "1. Ім'я" << endl;
     cout << "2. Прізвище" << endl;
     cout << "3. По батькові" << endl;
@@ -50,6 +50,7 @@ void printSearchMenu()
     cout << "5. Дата народження" << endl;
     cout << "6. Номером документа" << endl;
     cout << "7. Дійсний до" << endl;
+    cout << ">";
 }
 int get_variant(int max) {
     double input = -1;
@@ -81,6 +82,7 @@ int main()
 {
     system("chcp 1251>nul");
     int variant;
+    int searchVar;
     Citizen citizen;
     int n;
     TemporaryCitizen tcitizen;
@@ -126,11 +128,11 @@ int main()
                         do
                         {
                             printSearchMenu();
-                            variant = get_variant(7);
-                            citizen.search(variant);
+                            searchVar = get_variant(7);
+                            citizen.search(searchVar);
                             break;
                             system("pause");
-                        } while (variant != 8);
+                        } while (searchVar != 7);
                         break;
                     case 4:
                         citizen.editData();
@@ -181,11 +183,11 @@ int main()
                         do
                         {
                             printSearchMenu();
-                            variant = get_variant(7);
-                            tcitizen.search(variant);
+                            searchVar = get_variant(7);
+                            tcitizen.search(searchVar);
                             break;
                             system("pause");
-                        } while (variant != 8);
+                        } while (searchVar != 8);
                         break;
                     case 4:
                         tcitizen.editData();

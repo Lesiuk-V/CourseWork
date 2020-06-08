@@ -24,16 +24,19 @@ int Citizen::setNumberDocument()
     return id;
 }
 
-void Citizen::create()
+void Citizen::create(int id)
 {
     cin.ignore(10, '\n');
     cout << "\nІм'я: "; cin >> name;
     cout << "Прізвище: "; cin >> surname;
     cout << "По батькові: "; cin >> patronymic;
     cout << "Національність: "; cin >> nationality;
-    cout << "Дата народження: "; cin >> dateOfBirth;
-    cout << "Дійсний до: "; cin >> dateOfExpiry;                
-    numberDocument=setNumberDocument();
+    cout << "Дата народження(день.місяць.рік): "; cin >> dateOfBirth;
+    cout << "Дійсний до(день.місяць.рік): "; cin >> dateOfExpiry;    
+    if (id != 0)
+        numberDocument = id;
+    else
+        numberDocument = setNumberDocument();
 }
 
 void Citizen::showData()
@@ -44,8 +47,8 @@ void Citizen::showData()
     cout << "Прізвище: " << surname << endl;
     cout << "По батькові: " << patronymic << endl;
     cout << "Національність: " << nationality << endl;
-    cout << "Дата народження: " << dateOfBirth << endl;
-    cout << "Дійсний до: " << dateOfExpiry << endl << endl;;
+    cout << "Дата народження(день.місяць.рік): " << dateOfBirth << endl;
+    cout << "Дійсний до(день.місяць.рік): " << dateOfExpiry << endl << endl;;
 }
 
 void Citizen::read(int pn)
@@ -147,11 +150,12 @@ int Citizen::search(int variant)
     ifile.close();
 }
 
-
+    
 #pragma region Delete adn edit data
 
 void Citizen::deleteData()
 {
+    bool del = false;
     Citizen citizen;
     int str;
     cout << "Введіть номер документа для видалення: ";
@@ -171,7 +175,7 @@ void Citizen::deleteData()
 
         else
         {
-            cout << "\nЗапис видалено\n";
+            del = true;
         }
         file.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
     }
@@ -179,16 +183,21 @@ void Citizen::deleteData()
     file.close();
     if (remove("Citizen.dat") != 0)
     {
-        cout << "file do not remove";
+        cout << "\nПомилка. Файл неможливо видалити\n";
     }
     if (rename("temp.dat", "Citizen.dat") != 0)
     {
-        cout << "file do not rename";
+        cout << "\nПомилка. Файл неможливо перейменувати\n";
     }
+    if (del == true)
+        cout << "\nЗапис видалено\n";
+    else
+        cout << "\nНе вдалося видалити файл. Спробуйте ще раз.\n";
 }
 
 void Citizen::editData()
 {
+    bool edit = false;
     Citizen citizen;
     int str;
     cout << "Введіть номер документа для редагування: ";
@@ -209,8 +218,9 @@ void Citizen::editData()
 
         else
         {
-            citizen.create();
+            citizen.create(citizen.numberDocument);
             temp.write(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
+            edit = true;
         }
         file.read(reinterpret_cast<char*>(&citizen), sizeof(Citizen));
     }
@@ -218,12 +228,16 @@ void Citizen::editData()
     file.close();
     if (remove("Citizen.dat") != 0)
     {
-        cout << "file do not remove";
+        cout << "\nПомилка. Файл неможливо видалити\n";
     }
     if (rename("temp.dat", "Citizen.dat") != 0)
     {
-        cout << "file do not rename";
+        cout << "\nПомилка. Файл неможливо перейменувати\n";
     }
+    if (edit == true)
+        cout << "\nЗапис змінено\n";
+    else
+        cout << "\nПомилка при зміні запису спробуйте ще раз.\n";
 }
 
 #pragma endregion

@@ -24,15 +24,18 @@ int TemporaryCitizen::setNumberDocument()
     return id;
 }
 
-void TemporaryCitizen::create()
+void TemporaryCitizen::create(int id)
 {
     cin.ignore(10, '\n');
     cout << "\nІм'я: "; cin >> name;
     cout << "Прізвище: "; cin >> surname;
     cout << "По батькові: "; cin >> patronymic;
     cout << "Національність: "; cin >> nationality;
-    cout << "Дата народження: "; cin >> dateOfBirth;
-    cout << "Дійсний до: "; cin >> dateOfExpiry;
+    cout << "Дата народження(день.місяць.рік): "; cin >> dateOfBirth;
+    cout << "Дійсний до(день.місяць.рік): "; cin >> dateOfExpiry;
+    if (id != 0)
+        numberDocument = id;
+    else
     numberDocument = setNumberDocument();                   
 }
 
@@ -44,8 +47,8 @@ void TemporaryCitizen::showData()
     cout << "Прізвище: " << surname << endl;
     cout << "По батькові: " << patronymic << endl;
     cout << "Національність: " << nationality << endl;
-    cout << "Дата народження: " << dateOfBirth << endl;
-    cout << "Дійсний до: " << dateOfExpiry << endl << endl;
+    cout << "Дата народження(день.місяць.рік): " << dateOfBirth << endl;
+    cout << "Дійсний до(день.місяць.рік): " << dateOfExpiry << endl << endl;
 }
 
 void TemporaryCitizen::read(int pn)
@@ -150,6 +153,7 @@ int TemporaryCitizen::search(int variant)
 
 void TemporaryCitizen::deleteData()
 {
+    bool del = false;
     TemporaryCitizen tcitizen;
     int str;
     cout << "\nВведіть номер документа для видалення: ";
@@ -169,7 +173,7 @@ void TemporaryCitizen::deleteData()
 
         else
         {
-            cout << "\nЗапис видалено\n";
+            del = true;
         }
         file.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
     }
@@ -177,16 +181,21 @@ void TemporaryCitizen::deleteData()
     file.close();
     if (remove("Tcitizen.dat") != 0)
     {
-        cout << "file do not remove";
+        cout << "\nПомилка. Файл неможливо видалити\n";
     }
     if (rename("temp.dat", "Tcitizen.dat") != 0)
     {
-        cout << "file do not rename";
+        cout << "\nПомилка. Файл неможливо перейменувати\n";
     }
+    if (del == true)
+        cout << "\nЗапис видалено\n";
+    else
+        cout << "\nНе вдалося видалити файл. Спробуйте ще раз.\n";
 }
 
 void TemporaryCitizen::editData()
 {
+    bool edit = false;
     TemporaryCitizen tcitizen;
     int str;
     cout << "Введіть номер документа для редагування: ";
@@ -207,8 +216,9 @@ void TemporaryCitizen::editData()
 
         else
         {
-            tcitizen.create();
+            tcitizen.create(numberDocument);
             temp.write(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
+            edit = true;
         }
         file.read(reinterpret_cast<char*>(&tcitizen), sizeof(TemporaryCitizen));
     }
@@ -216,12 +226,16 @@ void TemporaryCitizen::editData()
     file.close();
     if (remove("Tcitizen.dat") != 0)
     {
-        cout << "file do not remove";
+        cout << "\nПомилка. Файл неможливо видалити\n";
     }
     if (rename("temp.dat", "Tcitizen.dat") != 0)
     {
-        cout << "file do not rename";
+        cout << "\nПомилка. Файл неможливо перейменувати\n";
     }
+    if (edit == true)
+        cout << "\nЗапис змінено\n";
+    else
+        cout << "\nПомилка при зміні запису спробуйте ще раз.\n";
 }
 
 #pragma endregion

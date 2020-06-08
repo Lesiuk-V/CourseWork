@@ -9,12 +9,12 @@ void print_citizen_menu()
     system("cls");
     cout << "          Громадяни\n" << endl;
     cout << "1.  Дадати данні громадянина" << endl;
-    cout << "2.  Переглянути данні всіх громадян" << endl;
+    cout << "2.  Переглянути всі данні  " << endl;
     cout << "3.  Пошук громадян" << endl;
-    cout << "4.  Редагування данних громадянина" << endl;
-    cout << "5.  Видалиння даних громадянина" << endl;
+    cout << "4.  Редагування данних " << endl;
+    cout << "5.  Видалення даних " << endl;
     cout << "6. Вихід" << endl;
-    cout << ">";
+    cout << "->";
 }
 
 void print_Tcitizen_menu()
@@ -25,9 +25,9 @@ void print_Tcitizen_menu()
     cout << "2.  Переглянути данні" << endl;
     cout << "3.  Пошук" << endl;
     cout << "4.  Редагування даних" << endl;
-    cout << "5.  Видалиння даних" << endl;
+    cout << "5.  Видалення даних" << endl;
     cout << "6. Вихід" << endl;
-    cout << ">";
+    cout << "->";
 }
 
 void print_menu() 
@@ -37,7 +37,7 @@ void print_menu()
     cout << "1.  Грамадяни" << endl;
     cout << "2.  Тимчасові громадяни" << endl;
     cout << "3. Вихід" << endl;
-    cout << ">";
+    cout << "->";
 }
 
 void printSearchMenu()
@@ -50,10 +50,10 @@ void printSearchMenu()
     cout << "5. Дата народження" << endl;
     cout << "6. Номером документа" << endl;
     cout << "7. Дійсний до" << endl;
-    cout << ">";
+    cout << "->";
 }
 int get_variant(int max) {
-    double input = -1;
+    int input = -1;
     bool valid = false;
     do
     {
@@ -106,7 +106,7 @@ int main()
                         {
 
                             cout << "Введіть дані громадянина: ";
-                            citizen.create();
+                            citizen.create(0);
                             citizen.write();
                             cout << "Продовжити ввід?(т/н)?";
                             cin >> ch;
@@ -156,12 +156,10 @@ int main()
                     switch (variant)
                     {
                     case 1:
-
-                        break;
                         do
                         {
-                            cout << "Введыть даны тимчасового громадянина: ";
-                            tcitizen.create();
+                            cout << "Введіть дані тимчасового громадянина: ";
+                            tcitizen.create(0);
                             tcitizen.write();
                             cout << "Породивжити(т/н)?";
                             cin >> ch;
@@ -172,7 +170,7 @@ int main()
                         cout << "У файлі " << n << " тимчасових громадян";
                         for (int j = 1; j < n + 1; j++)
                         {
-                            cout << "\n Тимчасовий громадянин" << j << endl;
+                            cout << "\n Тимчасовий громадянин " << j << endl;
                             tcitizen.read(j - 1);
                             tcitizen.showData();
                             cout << endl;
